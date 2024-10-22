@@ -10,9 +10,11 @@ products.name as name,
 products.description as description, 
 products.price as price,
 products.image as image
-FROM wishlists INNER JOIN products ON wishlists.product_id = products.id WHERE wishlists.user_id = :user_id';
+FROM wishlist INNER JOIN products ON wishlist.product_id = products.id WHERE wishlist.user_id = :user_id';
 $statement = $pdo->prepare($query);
 $statement->bindParam(':user_id', $_SESSION['id'], PDO::PARAM_INT);
+
+
 $statement->execute();
 $productInWishlist = $statement->fetchAll(PDO::FETCH_ASSOC);
 
@@ -90,23 +92,15 @@ $productInWishlist = $statement->fetchAll(PDO::FETCH_ASSOC);
                                 <p class="text-xl">$<?= $wishlisted_item['price'] ?></p>
                             </div>
                         </div>
-                        <div id="buttons" class="flex flex-col justify-center items-center space-y-4">
-                            <div class="flex items-center justify-center w-fit h-fit">
-                                <button class="px-4 py-2 bg-red-400 text-black rounded-lg shadow-lg hover:scale-105 hover:shadow-xl duration-300 my-auto h-fit w-fit"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <p id="quantity_<?= $product['id'] ?>">Quantity: <?= $wishlisted_item['quantity'] ?></p>
+                        <div id="buttons" class="flex flex-col justify-center items-center space-y-4 ">
                             <div class="flex items-center justify-center w-fit h-fit space-x-4">
-                                <button id="removePiece" onclick="removePiece(<?= $product['id'] ?>)" class="px-4 py-2 bg-red-400 text-black rounded-lg shadow-lg hover:scale-105 hover:shadow-xl duration-300 my-auto">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                    </svg>
-                                </button>
-                                <button id="addPiece" onclick="addPiece(<?= $product['id'] ?>)" class="px-4 py-2 bg-blue-400 text-black rounded-lg shadow-lg hover:scale-105 hover:shadow-xl duration-300 my-auto">
+                                <button id="add_to_cart" class="px-4 py-2 bg-green-400 text-black rounded-lg shadow-lg hover:scale-105 hover:shadow-xl duration-300 my-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </button>
+                                <button id="remove_from_wishlist" onclick="removeFromWishlist(<?=$wishlisted_item['id']?>)" class="px-4 py-2 bg-red-400 text-black rounded-lg shadow-lg hover:scale-105 hover:shadow-xl duration-300 my-auto h-fit w-fit"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                     </svg>
                                 </button>
                             </div>
@@ -158,6 +152,22 @@ $productInWishlist = $statement->fetchAll(PDO::FETCH_ASSOC);
                     if (response.itemQuantity == 0) {
                         $("#item_in_cart_" + id).remove()
                     }
+                }
+            })
+        }
+
+        function removeFromWishlist(id) {
+            $.ajax({
+                url: '../../ajax/add_to_wishlist.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    product: id,
+                },
+                success: function(response) {
+                   
+                        $('#item_in_cart_' + response.itemID).remove()
+                    
                 }
             })
         }

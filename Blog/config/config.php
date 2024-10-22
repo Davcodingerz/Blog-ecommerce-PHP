@@ -1,5 +1,5 @@
 <?php
 $host = "localhost";
 $dbname = "primoschema";
-$username = "spoolyy";
-$password = "pass1234";
+$username = "Davide";
+$password = "davide123";
