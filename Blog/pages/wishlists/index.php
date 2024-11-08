@@ -166,7 +166,7 @@ $productInWishlist = $statement->fetchAll(PDO::FETCH_ASSOC);
                 },
                 success: function(response) {
                    
-                        $('#item_in_cart_' + response.itemID).remove()
+                        $('#item_in_wishlist_' + response.itemID).remove()
                     
                 }
             })

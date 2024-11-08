@@ -97,6 +97,25 @@ $categories = $statement->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </form>
     </div>
+    <scripts>
+    function addTag(prou) {
+            $.ajax({
+                url: '../../ajax/add_to_wishlist.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    product: id,
+                },
+                success: function(response) {
+                    if (response.status == true) {
+                        $('#isWishlisted_' + response.itemID).attr('fill', '#FF000077')
+                    } else {
+                        $('#isWishlisted_' + response.itemID).attr('fill', 'none')
+                    }
+            }
+        })
+        }
+    </scripts>
 </body>
 
 </html>
