@@ -1,7 +1,7 @@
 <?php
 require_once('isLogged.php');
 
-setcookie("user", "Alessio Simeone", time() - 86400, "/");
+setcookie("user", "davide", time() - 86400, "/");
 $isAccepted = false;
 $isDenied = false;
 
@@ -57,8 +57,14 @@ $isDenied = false;
         <div id="navbar" class="w-full bg-gray-200 flex justify-between items-center px-4 py-6 rounded-b-lg text-lg shadow-lg">
             <Div>Logo/name</Div>
             <div class="flex space-x-4">
+<<<<<<< Updated upstream
                 <p class="font-semibold hover:scale-105 duration-200"><a href="./index.php">Home</a></p>
                 <p class="font-semibold hover:scale-105 duration-200"><a href="./categories/index.php">Categories</a></p>
+=======
+                <p class="font-semibold hover:scale-105 duration-200"><a href="index.php">Home</a></p>
+                <p class="font-semibold hover:scale-105 duration-200"><a href="products/index.php">Products</a></p>
+                <p class="font-semibold hover:scale-105 duration-200"><a href="categories/index.php">Categories</a></p>
+>>>>>>> Stashed changes
             </div>
             <button class="hover:scale-105 duration-200 hover:font-semibold"><a href="profiles/edit.php">Profile</a></button>
         </div>
